@@ -1,41 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title Page</title>
-    <!--Jquery-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <!--Socket.IO-->
-    <script src="/socket.io/socket.io.js"></script>
-
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-    <!--Bootstrap CSS-->
-    <link src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    </link>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Socket.io-->
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
-
-    <!-- <div class="container">
-        <h1 class="text-center">Chattr App</h1>
-
-        <form class="well">
-            <textarea name=taMsg id="taMsg" cols="30" rows="10" class="form-control"></textarea>
-
-            <input type="text" class="form-control" id="txtMsg">
-
-            <button class="btn btn-success" id=btnSend>
-                Send
-            </button>
-        </form>
-    </div> -->
-
     <div class="container">
-        <h1 class="text-center">Chatter App</h1>
+        <h1 class="text-center">Test C App</h1>
         <form class="well">
             <textarea name="taMsg" id="taMsg" cols="30" rows="10" class="form-control"></textarea>
             <input type="text" class="form-control" id="txtMsg">
@@ -44,34 +27,28 @@
             </button>
         </form>
     </div>
-
-
-
     <script>
 
         $(document).ready(function () {
+            //const socket = io.connect("http://localhost:3030");
             const socket = io.connect("/");
-            let chattername;
-
+            let chatterName;
             socket.on("acknowledge", (data) => {
                 console.log(data.message);
-                chattername = prompt("Pls enter name :");
-            })
-
-            socket.on("MsgToClient", (username, msg) => {
-                $("#taMsg").append(username + ":" + msg + "\n");
+                chatterName = prompt("Plz enter name : ");
+                console.log(chatterName);
             });
 
-            $("#btnSend").on("click", (event => {
+            $("#btnSend").on("click", (event) => {
                 event.preventDefault();
                 let message = $("#txtMsg").val();
-                socket.emit("MsgToServer", chattername, message);
+                socket.emit("MsgToServer", chatterName, message);
                 $("#txtMsg").val('');
-            }))
+            });
+
+            socket.on("MsgToClient", (userName, msg) => {
+                $("#taMsg").append(userName + " : " + msg + "\n");
+            });
         })
-
     </script>
-
 </body>
-
-</html>
